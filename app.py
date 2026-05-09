@@ -28,7 +28,7 @@ if st.button("ทายเลย!"):
     else:
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             prompt = f"รับบทเป็น Akinator ผู้รอบรู้ ฉันกำลังนึกถึง {category} "
             if is_real: prompt += f"ที่มีสถานะเป็น {is_real} "
