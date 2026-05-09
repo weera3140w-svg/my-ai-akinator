@@ -31,8 +31,8 @@ if st.button("ทายเลย!"):
             # ตั้งค่า AI
             genai.configure(api_key=api_key)
             
-            # ใช้รุ่นที่เสถียรที่สุด
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            # ใช้รุ่น gemini-pro ที่รองรับแน่นอนทุกเวอร์ชัน
+            model = genai.GenerativeModel('gemini-pro')
             
             # สร้างคำถามให้ AI
             prompt = f"คุณคือ Akinator ผู้รอบรู้ ฉันกำลังนึกถึง {category} ที่เป็นแบบ {is_real} มีลักษณะคือ: {description}. ช่วยทายชื่อมา 1 ชื่อ พร้อมเหตุผลสั้นๆ"
