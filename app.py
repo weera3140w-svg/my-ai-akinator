@@ -29,10 +29,7 @@ if st.button("ทายเลย!"):
         try:
             genai.configure(api_key=api_key)
             
-            # ลองใช้รุ่น Flash ล่าสุด ถ้าไม่ได้ให้ถอยไปใช้รุ่นพื้นฐาน
-            try:
-                model = genai.GenerativeModel('gemini-1.5-flash')
-            except:
+model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
                 model = genai.GenerativeModel('gemini-pro')
             
             prompt = f"คุณคือ Akinator ผู้รอบรู้ ฉันกำลังนึกถึง {category} "
