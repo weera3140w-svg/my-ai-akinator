@@ -7,7 +7,7 @@ st.set_page_config(page_title="AI Akinator", page_icon="🧠")
 st.title("🧠 AI ทายใจ (สไตล์ Akinator)")
 st.write("ลองคิดถึงตัวละคร สิ่งของ หรือหนัง แล้วให้ผมทายดู!")
 
-# รับ API Key (แนะนำให้ไปเอาจาก Google AI Studio)
+# รับ API Key
 api_key = st.sidebar.text_input("ใส่ Gemini API Key:", type="password")
 
 # --- ส่วนของการเลือกหมวดหมู่ ---
@@ -28,11 +28,16 @@ if st.button("ทายเลย!"):
     else:
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash-latest')
             
-            prompt = f"รับบทเป็น Akinator ผู้รอบรู้ ฉันกำลังนึกถึง {category} "
+            # ลองใช้รุ่น Flash ล่าสุด ถ้าไม่ได้ให้ถอยไปใช้รุ่นพื้นฐาน
+            try:
+                model = genai.GenerativeModel('gemini-1.5-flash')
+            except:
+                model = genai.GenerativeModel('gemini-pro')
+            
+            prompt = f"คุณคือ Akinator ผู้รอบรู้ ฉันกำลังนึกถึง {category} "
             if is_real: prompt += f"ที่มีสถานะเป็น {is_real} "
-            prompt += f"โดยมีลักษณะคือ: {description}. ช่วยทายชื่อมา 1 ชื่อ พร้อมเหตุผลสั้นๆ"
+            prompt += f"โดยมีลักษณะคือ: {description}. ช่วยทายชื่อสิ่งที่ฉันนึกถึงมา 1 ชื่อ พร้อมเหตุผลสั้นๆ"
             
             with st.spinner('กำลังใช้พลังจิตวิเคราะห์...'):
                 response = model.generate_content(prompt)
@@ -40,3 +45,4 @@ if st.button("ทายเลย!"):
                 st.subheader(response.text)
         except Exception as e:
             st.error(f"เกิดข้อผิดพลาด: {e}")
+            st.info("คำแนะนำ: ลองตรวจสอบว่า API Key ถูกต้องหรือเลือกใช้รุ่น gemini-1.5-flash-latest ใน GitHub แทน")
