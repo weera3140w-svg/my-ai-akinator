@@ -1,14 +1,17 @@
 import streamlit as st
 import google.generativeai as genai
 
-# ตั้งค่า API
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+# โหลด API KEY
+genai.configure(
+    api_key=st.secrets["GEMINI_API_KEY"]
+)
 
-model = genai.GenerativeModel("models/gemini-2.0-flash")
+# ใช้ model ที่เสถียร
+model = genai.GenerativeModel(
+    "gemini-2.0-flash"
+)
 
-st.set_page_config(page_title="Thai Akinator")
-
-st.title("🎮 เกม AI ทายสิ่งที่คุณคิด")
+st.title("🎮 Thai Akinator")
 
 category = st.selectbox(
     "เลือกหมวด",
@@ -16,7 +19,7 @@ category = st.selectbox(
 )
 
 real = st.radio(
-    "มีอยู่จริงไหม?",
+    "มีจริงไหม?",
     ["มีจริง", "ไม่มีจริง"]
 )
 
@@ -26,25 +29,30 @@ desc = st.text_area(
 
 if st.button("ให้ AI เดา"):
 
-    prompt = f"""
-    ผู้เล่นกำลังคิดถึงอะไรบางอย่าง
+    if desc.strip() == "":
+        st.warning("กรุณาพิมพ์คำอธิบาย")
+    else:
 
-    หมวด: {category}
-    สถานะ: {real}
+        prompt = f"""
+        ผู้เล่นกำลังคิดถึงอะไรบางอย่าง
 
-    คำอธิบาย:
-    {desc}
+        หมวด: {category}
+        สถานะ: {real}
 
-    ให้ตอบสั้นๆแบบนี้:
+        คำอธิบาย:
+        {desc}
 
-    ชื่อ: ...
-    ประเภท: ...
+        ให้ตอบสั้นๆแบบนี้เท่านั้น
 
-    ตัวอย่าง:
-    ชื่อ: เบิร์ด ธงไชย
-    ประเภท: นักร้อง
-    """
+        ชื่อ: ...
+        ประเภท: ...
+        """
 
-    response = model.generate_content(prompt)
+        try:
+            response = model.generate_content(prompt)
 
-    st.success(response.text)
+            st.success(response.text)
+
+        except Exception as e:
+            st.error("AI มีปัญหา กรุณาลองใหม่")
+            st.code(str(e))
