@@ -8,7 +8,7 @@ genai.configure(
 
 # ใช้ Gemini
 model = genai.GenerativeModel(
-    "gemini-1.5-flash"
+    "gemini-2.0-flash"
 )
 
 # ตั้งค่าหน้าเว็บ
